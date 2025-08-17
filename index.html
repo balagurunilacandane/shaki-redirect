@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaki App - Redirect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .fallback {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .loading {
+            margin: 20px 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏪</div>
+        <h1 class="title">Welcome to Shaki</h1>
+        <p class="description">Opening the Shaki app to view the product...</p>
+        
+        <div class="loading" id="loading">Redirecting in <span id="countdown">3</span> seconds...</div>
+        
+        <a href="shaki://product/1" class="button" id="openApp">Open in Shaki App</a>
+        <a href="https://play.google.com/store/apps/details?id=com.shaki.app" class="button">Download App</a>
+        
+        <p class="fallback">
+            If the app doesn't open automatically, tap "Open in Shaki App" above
+        </p>
+    </div>
+
+    <script>
+        // Get productId from URL parameters
+        function getProductId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('productId') || '1';
+        }
+        
+        const productId = getProductId();
+        const appUrl = 'shaki://product/' + productId;
+        
+        // Update the button href
+        document.getElementById('openApp').href = appUrl;
+        
+        // Countdown timer
+        let countdown = 3;
+        const countdownElement = document.getElementById('countdown');
+        const loadingElement = document.getElementById('loading');
+        
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(timer);
+                loadingElement.textContent = 'Redirecting now...';
+                
+                // Auto-redirect to app
+                setTimeout(() => {
+                    window.location.href = appUrl;
+                }, 500);
+            }
+        }, 1000);
+
+        // Fallback: if app doesn't open, show download option after 5 seconds
+        setTimeout(() => {
+            document.getElementById('openApp').style.display = 'block';
+        }, 5000);
+    </script>
+</body>
+</html> 
