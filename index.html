@@ -74,8 +74,6 @@
         <h1 class="title">Welcome to Shaki</h1>
         <p class="description">Opening the Shaki app to view the product...</p>
         
-        <div class="loading" id="loading">Redirecting in <span id="countdown">3</span> seconds...</div>
-        
         <a href="shaki://product/1" class="button" id="openApp">Open in Shaki App</a>
         <a href="https://play.google.com/store/apps/details?id=com.shaki.app" class="button">Download App</a>
         
@@ -97,30 +95,10 @@
         // Update the button href
         document.getElementById('openApp').href = appUrl;
         
-        // Countdown timer
-        let countdown = 3;
-        const countdownElement = document.getElementById('countdown');
-        const loadingElement = document.getElementById('loading');
-        
-        const timer = setInterval(() => {
-            countdown--;
-            countdownElement.textContent = countdown;
-            
-            if (countdown <= 0) {
-                clearInterval(timer);
-                loadingElement.textContent = 'Redirecting now...';
-                
-                // Auto-redirect to app
-                setTimeout(() => {
-                    window.location.href = appUrl;
-                }, 500);
-            }
-        }, 1000);
-
-        // Fallback: if app doesn't open, show download option after 5 seconds
+        // Auto-redirect to app immediately
         setTimeout(() => {
-            document.getElementById('openApp').style.display = 'block';
-        }, 5000);
+            window.location.href = appUrl;
+        }, 500);
     </script>
 </body>
 </html> 
